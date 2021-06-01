@@ -1,6 +1,7 @@
 package com.fund.transfer.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -16,6 +17,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.BeanUtils;
 
 import com.fund.transfer.dto.AccountDto;
 import com.fund.transfer.repository.AccountRepository;
@@ -65,13 +67,16 @@ class AccountServiceTest {
 	@DisplayName("Save Account")
 	void addAccountTest() {
 
-		//context
-		when(accountRepository.save(account)).thenReturn(account);
+		// context
+		when(accountRepository.save(any(Account.class))).thenAnswer(i -> {
+			Account acc = i.getArgument(0);
+			acc.setId(1L);
+			account = acc;
+			return account;
+		});
 
-		//event
+		// event
 		Account result = accountService.addAccount(accountDto);
-
-		verify(accountRepository).save(account);
 
 		// outcome
 		assertEquals(account, result);
@@ -81,10 +86,10 @@ class AccountServiceTest {
 	@DisplayName("Retrieve Account By Id")
 	void getAccountByIdTest() {
 
-		//context
+		// context
 		when(accountRepository.findById(1L)).thenReturn(Optional.of(account));
 
-		//event
+		// event
 		Account result = accountService.retriveAccount(1L);
 
 		verify(accountRepository).findById(1L);
@@ -97,10 +102,10 @@ class AccountServiceTest {
 	@DisplayName("Retrieve All Accounts")
 	void getAllAccountsTest() {
 
-		//context
+		// context
 		when(accountRepository.findAll()).thenReturn(accountList);
 
-		//event
+		// event
 		List<Account> result = accountService.retriveAllAccounts();
 
 		verify(accountRepository).findAll();
@@ -114,31 +119,36 @@ class AccountServiceTest {
 	@DisplayName("Retrieve Account By Account Number")
 	void getAccountByAccountNumber() {
 
-		//context
-		when(accountRepository.findByAccountNumber("12345667789")).thenReturn(Optional.of(account));
+		// context
+		when(accountRepository.findByAccountNumber("987654321234567")).thenReturn(Optional.of(account));
 
-		//event
-		Optional<AccountDto> result = accountService.findByAccountNumber("12345667789");
+		// event
+		Optional<AccountDto> result = accountService.findByAccountNumber("987654321234567");
 
-		verify(accountRepository).findByAccountNumber("12345667789");
+		verify(accountRepository).findByAccountNumber("987654321234567");
 
+		Account acc = new Account();
+		BeanUtils.copyProperties(result, acc);
 		// outcome
-		assertEquals(Optional.of(account), result);
+		assertEquals(account, acc);
 	}
 
 	@Test
 	@DisplayName("Update Account")
 	void updateAccountTest() {
 
-		//context
+		// context
 		when(accountRepository.findById(1L)).thenReturn(Optional.of(account));
 
-		when(accountRepository.save(account)).thenReturn(account);
+		when(accountRepository.save(any(Account.class))).thenAnswer(i -> {
+			Account acc = i.getArgument(0);
+			acc.setId(1L);
+			account = acc;
+			return account;
+		});
 
-		//event
+		// event
 		Account result = accountService.updateAccount(accountDto);
-
-		verify(accountRepository).save(account);
 
 		// outcome
 		assertEquals(account, result);

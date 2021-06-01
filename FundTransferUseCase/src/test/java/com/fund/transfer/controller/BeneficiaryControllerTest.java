@@ -63,12 +63,15 @@ class BeneficiaryControllerTest {
 	@DisplayName("Add Beneficiary Test Method")
 	void addBeneficiary() {
 
+		// context
 		when(beneficiaryService.addBeneficiary(beneficiaryDto)).thenReturn(beneficiary);
 
+		// event
 		ResponseEntity<Beneficiary> result = beneficiaryController.addBeneficiary(beneficiaryDto);
 
 		verify(beneficiaryService).addBeneficiary(beneficiaryDto);
 
+		// outcome
 		assertEquals(beneficiary, result.getBody());
 	}
 
@@ -76,12 +79,15 @@ class BeneficiaryControllerTest {
 	@DisplayName("Get All Beneficiaries Test Method")
 	void getAllBeneficiariesTest() {
 
+		// context
 		when(beneficiaryService.retriveAllBeneficiaries()).thenReturn(beneficiaryList);
 
+		// event
 		List<Beneficiary> result = beneficiaryController.getAllBeneficiaries();
 
 		verify(beneficiaryService).retriveAllBeneficiaries();
 
+		// outcome
 		assertEquals(beneficiaryList, result);
 	}
 
@@ -89,12 +95,15 @@ class BeneficiaryControllerTest {
 	@DisplayName("Get Beneficiary By Id Test Method")
 	void getBeneficiaryByIdTest() {
 
+		// context
 		when(beneficiaryService.getBeneficiaryById(1L)).thenReturn(beneficiary);
 
+		// event
 		Beneficiary result = beneficiaryController.getBeneficiaryById(1L);
 
 		verify(beneficiaryService).getBeneficiaryById(1L);
 
+		// outcome
 		assertEquals(beneficiary, result);
 	}
 
@@ -102,12 +111,15 @@ class BeneficiaryControllerTest {
 	@DisplayName("Get Beneficiary By AccountNumber Test Method")
 	void getBeneficiaryByAccountNumberTest() {
 
+		// context
 		when(beneficiaryService.findByAccountNumber("98765432123456")).thenReturn(beneficiary);
 
+		// event
 		Beneficiary result = beneficiaryController.getBeneficiaryByAccountNumber("98765432123456");
 
 		verify(beneficiaryService).findByAccountNumber("98765432123456");
 
+		// outcome
 		assertEquals(beneficiary, result);
 	}
 

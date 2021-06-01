@@ -38,6 +38,8 @@ class FundTransferControllerTest {
 	static TransferFundRequest transferFundRequest;
 
 	static CustomTransaction customTransaction;
+	
+	static CustomTransaction transaction;
 
 	static AccountDto account;
 
@@ -55,9 +57,17 @@ class FundTransferControllerTest {
 		customTransaction.setTransactionAmount(new BigDecimal(1200));
 		customTransaction.setTransactionDateTime(new Timestamp(Instant.now().toEpochMilli()));
 
+		transaction = new CustomTransaction();
+		transaction.setFromAccountnumber("123456879");
+		transaction.setToAccountNumber("98765456");
+		transaction.setId(1L);
+		transaction.setTransactionAmount(new BigDecimal(1200));
+		transaction.setTransactionDateTime(new Timestamp(Instant.now().toEpochMilli()));
+
+		
 		account = new AccountDto();
 		account.setAccountHolderName("sravanthi ch");
-		account.setAccountNumber("98765678765456");
+		account.setAccountNumber("123456879");
 		account.setIfscCode("HDFC000786");
 		account.setBankName("HDFC");
 		account.setBalance(new BigDecimal(20000));
@@ -69,15 +79,18 @@ class FundTransferControllerTest {
 	@DisplayName("Transfer Fund Request Test Method")
 	void transferTest() {
 
-		when(customTransactionService.addTransaction(customTransaction)).thenReturn(customTransaction);
+		// context
+		when(customTransactionService.addTransaction(customTransaction)).thenReturn(transaction);
 
-		when(accountService.findByAccountNumber("65765785")).thenReturn(Optional.of(account));
+		when(accountService.findByAccountNumber("123456879")).thenReturn(Optional.of(account));
 
+		// event
 		CustomTransaction result = fundTransferController.sendMoney(transferFundRequest);
 
 		verify(customTransactionService).addTransaction(customTransaction);
 
-		assertEquals(customTransaction, result);
+		// outcome
+		assertEquals(transaction, result);
 	}
 
 }

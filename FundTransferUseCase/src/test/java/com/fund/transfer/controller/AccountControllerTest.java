@@ -1,7 +1,6 @@
 package com.fund.transfer.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -37,11 +36,6 @@ class AccountControllerTest {
 
 	static List<Account> accountList;
 
-	@Test
-	void test() {
-		fail("Not yet implemented");
-	}
-
 	@BeforeAll
 	public static void setUp() {
 		accountDto = new AccountDto();
@@ -70,13 +64,15 @@ class AccountControllerTest {
 	@DisplayName("Add Account Test Method")
 	void addAccountTest() {
 
-		//context
+		// context
 		when(accountService.addAccount(accountDto)).thenReturn(account);
 
+		// event
 		Account result = accountService.addAccount(accountDto);
 
 		verify(accountService).addAccount(accountDto);
 
+		// outcome
 		assertEquals(account, result);
 	}
 
@@ -84,13 +80,13 @@ class AccountControllerTest {
 	@DisplayName("Update Account Test Method")
 	void updateAccountTest() {
 
-		//context
+		// context
 		when(accountService.updateAccount(accountDto)).thenReturn(account);
 
-		Account result = accountService.addAccount(accountDto);
+		// event
+		Account result = accountService.updateAccount(accountDto);
 
-		verify(accountService).updateAccount(accountDto);
-
+		// outcome
 		assertEquals(account, result);
 
 	}
@@ -99,13 +95,15 @@ class AccountControllerTest {
 	@DisplayName("Get Account By AccountNumber Test Method")
 	void getAccountByAccountNumberTest() {
 
-		//context
+		// context
 		when(accountService.findByAccountNumber("2435678")).thenReturn(Optional.of(accountDto));
 
+		// event
 		Optional<AccountDto> result = accountService.findByAccountNumber("2435678");
 
 		verify(accountService).findByAccountNumber("2435678");
 
+		// outcome
 		assertEquals(accountDto, result.get());
 
 	}
@@ -114,13 +112,15 @@ class AccountControllerTest {
 	@DisplayName("Get All Account Test Method")
 	void getAllAccountsTest() {
 
-		//context
+		// context
 		when(accountService.retriveAllAccounts()).thenReturn(accountList);
 
+		// event
 		List<Account> result = accountService.retriveAllAccounts();
 
 		verify(accountService).retriveAllAccounts();
 
+		// outcome
 		assertEquals(accountList, result);
 	}
 
@@ -128,13 +128,15 @@ class AccountControllerTest {
 	@DisplayName("Get Account By ID Test Method")
 	void getAccountById() {
 
-		//context
+		// context
 		when(accountService.retriveAccount(1L)).thenReturn(account);
 
+		// event
 		Account result = accountService.retriveAccount(1L);
 
 		verify(accountService).retriveAccount(1L);
 
+		// outcome
 		assertEquals(account, result);
 
 	}

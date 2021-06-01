@@ -36,7 +36,7 @@ class UserControllerTest {
 	static List<CustomUser> customUserList;
 
 	@BeforeAll
-	public static void set() {
+	public static void setUp() {
 
 		customUserDto = new CustomUserDto();
 		customUserDto.setAddress("");
@@ -69,54 +69,66 @@ class UserControllerTest {
 	}
 
 	@Test
-	@DisplayName("User Creation Test Method")
+	@DisplayName("Registering User")
 	void createUserTest() {
 
+		// context
 		when(userService.addUser(customUserDto)).thenReturn(customUser);
 
+		// event
 		ResponseEntity<CustomUser> result = userController.createUser(customUserDto);
 
 		verify(userService).addUser(customUserDto);
 
+		// outcome
 		assertEquals(customUser, result.getBody());
 	}
 
 	@Test
-	@DisplayName("User Updation Test Method")
+	@DisplayName("Updating User")
 	void updateUserTest() {
 
+		// context
 		when(userService.updateUser(customUserDto)).thenReturn(customUser);
 
+		// event
 		ResponseEntity<CustomUser> result = userController.updateUser(customUserDto);
 
-		verify(userService).addUser(customUserDto);
+		verify(userService).updateUser(customUserDto);
 
+		// outcome
 		assertEquals(customUser, result.getBody());
 	}
 
 	@Test
-	@DisplayName("Retrieving all Users Test Method")
+	@DisplayName("Retrieving all Users")
 	void getAllUsersTest() {
 
+		// context
 		when(userService.retrieveAllUsers()).thenReturn(customUserList);
 
+		// event
 		List<CustomUser> result = userController.getAllUsers();
 
 		verify(userService).retrieveAllUsers();
 
+		// outcome
 		assertEquals(customUserList, result);
 	}
 
 	@Test
-	@DisplayName("Retrieving User By Id Test Method")
+	@DisplayName("Retrieving User By Id")
 	void getUserTest() {
 
+		// context
 		when(userService.retrieveUserDetailsById(1L)).thenReturn(customUser);
 
+		// event
 		CustomUser result = userController.getUserById(1L);
 
 		verify(userService).retrieveUserDetailsById(1L);
 
+		// outcome
 		assertEquals(customUser, result);
 	}
 

@@ -36,6 +36,8 @@ class LoginControllerTest {
 		customUserDto.setFirstName("sravanthi");
 		customUserDto.setPassword("password");
 		customUserDto.setLoggedIn(true);
+		customUserDto.setId(1L);
+		customUserDto.setMailId("abc@gmail.com");
 
 		customUser = new CustomUser();
 		customUser.setFirstName("sravanthi");
@@ -44,18 +46,22 @@ class LoginControllerTest {
 		customUser.setMobileNumber(1234567678);
 		customUser.setMailId("abc@gmail.com");
 		customUser.setPassword("password");
+		customUser.setId(1L);
 	}
 
 	@Test
 	@DisplayName("Login User Test Method")
 	void loginUserTest() {
 
-		when(userService.retrieveUserByUserNameAndPassword("sravanthi", "password")).thenReturn(customUser);
+		// context
+		when(userService.retrieveUserByUserNameAndPassword("abc@gmail.com", "password")).thenReturn(customUser);
 
+		// event
 		CustomUserDto result = loginController.loginUser(customUserDto);
 
-		verify(userService).retrieveUserByUserNameAndPassword("sravanthi", "password");
+		verify(userService).retrieveUserByUserNameAndPassword("abc@gmail.com", "password");
 
+		// outcome
 		assertEquals(customUserDto, result);
 	}
 
@@ -63,12 +69,15 @@ class LoginControllerTest {
 	@DisplayName("Logout User Test Method")
 	void logoutUserTest() {
 
-		when(userService.retrieveUserByUserNameAndPassword("sravanthi", "password")).thenReturn(customUser);
+		// context
+		when(userService.retrieveUserDetailsById(1L)).thenReturn(customUser);
 
+		// event
 		boolean result = loginController.logoutUser(1L);
 
-		verify(userService).retrieveUserByUserNameAndPassword("sravanthi", "password");
+		verify(userService).retrieveUserDetailsById(1L);
 
+		// outcome
 		assertEquals(true, result);
 	}
 

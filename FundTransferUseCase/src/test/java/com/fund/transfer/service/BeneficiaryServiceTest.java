@@ -1,6 +1,7 @@
 package com.fund.transfer.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -63,7 +64,12 @@ class BeneficiaryServiceTest {
 	void addBeneficiaryTest() {
 
 		// context
-		when(beneficiaryRepository.save(beneficiary)).thenReturn(beneficiary);
+		when(beneficiaryRepository.save(any(Beneficiary.class))).thenAnswer(i -> {
+			Beneficiary ben = i.getArgument(0);
+			ben.setId(1L);
+			beneficiary = ben;
+			return beneficiary;
+		});
 
 		// event
 		Beneficiary result = beneficiaryService.addBeneficiary(beneficiaryDto);
@@ -79,7 +85,14 @@ class BeneficiaryServiceTest {
 	void updateBeneficiaryTest() {
 
 		// context
-		when(beneficiaryRepository.save(beneficiary)).thenReturn(beneficiary);
+		when(beneficiaryRepository.save(any(Beneficiary.class))).thenAnswer(i -> {
+			Beneficiary ben = i.getArgument(0);
+			ben.setId(1L);
+			beneficiary = ben;
+			return beneficiary;
+		});
+		
+		when(beneficiaryRepository.findById(1L)).thenReturn(Optional.of(beneficiary));
 
 		// event
 		Beneficiary result = beneficiaryService.updateBeneficiary(beneficiaryDto);
@@ -130,9 +143,9 @@ class BeneficiaryServiceTest {
 		when(beneficiaryRepository.findByAccountNumber("123456789123456")).thenReturn(Optional.of(beneficiary));
 
 		// event
-		Beneficiary result = beneficiaryService.addBeneficiary(beneficiaryDto);
+		Beneficiary result = beneficiaryService.findByAccountNumber("123456789123456");
 
-		verify(beneficiaryRepository).save(beneficiary);
+		verify(beneficiaryRepository).findByAccountNumber("123456789123456");
 
 		// outcome
 		assertEquals(beneficiary, result);

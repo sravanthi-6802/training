@@ -1,6 +1,7 @@
 package com.fund.transfer.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -73,12 +74,15 @@ class UserServiceTest {
 	void addUserTest() {
 
 		// context
-		when(userRepository.save(customUser)).thenReturn(customUser);
+		when(userRepository.save(any(CustomUser.class))).thenAnswer(i -> {
+			CustomUser user = i.getArgument(0);
+			user.setId(1L);
+			customUser = user;
+			return customUser;
+		});
 
 		// event
 		CustomUser result = userService.addUser(customUserDto);
-
-		verify(userRepository).save(customUser);
 
 		// outcome
 		assertEquals(customUser, result);
@@ -89,12 +93,17 @@ class UserServiceTest {
 	void updateUserTest() {
 
 		// context
-		when(userRepository.save(customUser)).thenReturn(customUser);
+		when(userRepository.save(any(CustomUser.class))).thenAnswer(i -> {
+			CustomUser user = i.getArgument(0);
+			user.setId(1L);
+			customUser = user;
+			return customUser;
+		});
+
+		when(userRepository.findById(customUserDto.getId())).thenReturn(Optional.of(customUser));
 
 		// event
 		CustomUser result = userService.updateUser(customUserDto);
-
-		verify(userRepository).save(customUser);
 
 		// outcome
 		assertEquals(customUser, result);
@@ -156,7 +165,7 @@ class UserServiceTest {
 		// event
 		Optional<CustomUser> result = userService.retrieveUserDetailsByMail("abc@gmail.com");
 
-		verify(userRepository).save(customUser);
+		verify(userRepository).findByMailId("abc@gmail.com");
 
 		// outcome
 		assertEquals(customUser, result.get());
