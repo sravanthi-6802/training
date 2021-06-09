@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,8 +36,8 @@ public class AccountController {
 	@ApiOperation(value = "Api to create new Account")
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public Account addAccount(@Valid @RequestBody AccountDto accountDto) {
-		Optional<AccountDto> existing = accountService.findByAccountNumber(accountDto.getAccountNumber());
+	public Account addAccount(@Valid @RequestBody AccountDto accountDto, BindingResult res) {
+		Optional<AccountDto> existing = accountService.findByAccountNumber(accountDto.getAccountNumber(), accountDto);
 		if (existing.isPresent()) {
 			throw new DuplicateEntryException("Already Account Number exists");
 		}

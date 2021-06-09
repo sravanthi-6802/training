@@ -14,6 +14,7 @@ import com.fund.transfer.exception.CustomEntityNotFoundException;
 import com.fund.transfer.exception.DuplicateEntryException;
 import com.fund.transfer.repository.UserRepository;
 import com.fund.transfer.repository.entity.CustomUser;
+import com.fund.transfer.util.FundTransferConstants;
 
 @Service
 public class UserService {
@@ -38,7 +39,7 @@ public class UserService {
 	public CustomUser retrieveUserDetailsById(Long id) {
 		Optional<CustomUser> user = userRepository.findById(id);
 		if (!user.isPresent()) {
-			throw new CustomEntityNotFoundException("User Not Found");
+			throw new CustomEntityNotFoundException(FundTransferConstants.USERNOTFOUND);
 		}
 		logger.debug("Retrieved User Details By Id ");
 		return user.get();
@@ -47,7 +48,7 @@ public class UserService {
 	public CustomUser retrieveUserByUserNameAndPassword(String username, String password) {
 		Optional<CustomUser> user = userRepository.findByMailIdAndPassword(username, password);
 		if (!user.isPresent()) {
-			throw new CustomEntityNotFoundException("User Not Found");
+			throw new CustomEntityNotFoundException(FundTransferConstants.USERNOTFOUND);
 		}
 		logger.debug("Retrieved user Details by Mail and password for login");
 		return user.get();
@@ -64,7 +65,7 @@ public class UserService {
 	public CustomUser updateUser(CustomUserDto userDto) {
 		Optional<CustomUser> userData = userRepository.findById(userDto.getId());
 		if (!userData.isPresent())
-			throw new CustomEntityNotFoundException("User Not Found");
+			throw new CustomEntityNotFoundException(FundTransferConstants.USERNOTFOUND);
 
 		CustomUser user = new CustomUser();
 		BeanUtils.copyProperties(userDto, user);
@@ -78,8 +79,6 @@ public class UserService {
 	}
 
 	public Optional<CustomUser> retrieveUserDetailsByMail(String mail) {
-		Optional<CustomUser> user = userRepository.findByMailId(mail);
-
-		return user;
+		return userRepository.findByMailId(mail);
 	}
 }

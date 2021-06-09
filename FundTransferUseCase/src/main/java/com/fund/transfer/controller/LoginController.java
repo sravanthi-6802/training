@@ -26,7 +26,7 @@ public class LoginController {
 		CustomUser loggedInUser = null;
 		try {
 			loggedInUser = userService.retrieveUserByUserNameAndPassword(userDto.getMailId(), userDto.getPassword());
-			loggedInUser.setLoggedIn(true);
+			loggedInUser.setActive(true);
 
 			BeanUtils.copyProperties(loggedInUser, userDto);
 			userService.updateUser(userDto);
@@ -41,7 +41,7 @@ public class LoginController {
 	public boolean logoutUser(@PathVariable Long id) {
 
 		CustomUser user = userService.retrieveUserDetailsById(id);
-		user.setLoggedIn(false);
+		user.setActive(false);
 
 		CustomUserDto userDto = new CustomUserDto();
 		BeanUtils.copyProperties(user, userDto);

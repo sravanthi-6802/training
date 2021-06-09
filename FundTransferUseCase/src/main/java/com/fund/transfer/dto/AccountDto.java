@@ -2,20 +2,28 @@ package com.fund.transfer.dto;
 
 import java.math.BigDecimal;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 public class AccountDto {
 
 	private Long id;
 
+	@NotEmpty
 	private String accountNumber;
 
+	@NotEmpty
 	private String ifscCode;
 
+	@NotEmpty
 	private String accountHolderName;
 
+	@NotEmpty
 	private String bankName;
 
 	private BigDecimal balance;
 
+	@NotNull(message="UserId must not be null")
 	private Long userId;
 
 	public Long getId() {

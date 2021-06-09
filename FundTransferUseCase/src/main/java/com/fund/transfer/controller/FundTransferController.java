@@ -29,18 +29,18 @@ public class FundTransferController {
 
 	@PostMapping("/transfer")
 	public CustomTransaction transferFundRequest(@RequestBody TransferFundRequest fundRequest) {
-		CustomTransaction transaction = sendMoney(fundRequest);
-		return transaction;
+		AccountDto accountDto = new AccountDto();
+		CustomTransaction transaction = new CustomTransaction();
+		return sendMoney(fundRequest, accountDto, transaction);
 	}
 
-	public CustomTransaction sendMoney(TransferFundRequest fundRequest) {
+	public CustomTransaction sendMoney(TransferFundRequest fundRequest, AccountDto accountDto, CustomTransaction transaction) {
 		String fromAccountNumber = fundRequest.getFromAccountNumber();
 		String toAccountNumber = fundRequest.getToAccountNumber();
 		BigDecimal amount = new BigDecimal(fundRequest.getAmount());
 
-		CustomTransaction transaction = new CustomTransaction();
-
-		Optional<AccountDto> account = accountService.findByAccountNumber(fromAccountNumber);
+		
+		Optional<AccountDto> account = accountService.findByAccountNumber(fromAccountNumber, accountDto);
 		if (!account.isPresent()) {
 			throw new CustomEntityNotFoundException("From Account doesn't exist");
 		}
@@ -53,7 +53,6 @@ public class FundTransferController {
 			transaction.setTransactionAmount(amount);
 
 			acc.setBalance(acc.getBalance().subtract(amount));
-			AccountDto accountDto = new AccountDto();
 			BeanUtils.copyProperties(acc, accountDto);
 			accountService.updateAccount(accountDto);
 

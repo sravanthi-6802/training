@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fund.transfer.dto.CustomUserDto;
+import com.fund.transfer.feignclient.ShoppingService;
 import com.fund.transfer.repository.entity.CustomUser;
 import com.fund.transfer.service.UserService;
 
@@ -30,10 +32,13 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private ShoppingService shoppingService;
 
 	@ApiOperation(value = "Api to register new User")
 	@PostMapping("/register")
-	public ResponseEntity<CustomUser> createUser(@Valid @RequestBody CustomUserDto userDto) {
+	public ResponseEntity<CustomUser> createUser(@Valid @RequestBody CustomUserDto userDto, BindingResult res) {
 		CustomUser customUser = userService.addUser(userDto);
 		return ResponseEntity.status(HttpStatus.CREATED).body(customUser);
 	}
@@ -63,4 +68,13 @@ public class UserController {
 		return userService.retrieveUserDetailsById(id);
 	}
 
+	@GetMapping("/data")
+	public String userData() {
+		return "Fund Transfer User Controller Test Data";
+	}
+	
+	@GetMapping("/product")
+	public String shoppingService() {
+		return shoppingService.productData();
+	}
 }

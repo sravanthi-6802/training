@@ -1,6 +1,5 @@
 package com.fund.transfer.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +13,7 @@ import com.fund.transfer.dto.AccountDto;
 import com.fund.transfer.exception.CustomEntityNotFoundException;
 import com.fund.transfer.repository.AccountRepository;
 import com.fund.transfer.repository.entity.Account;
+import com.fund.transfer.util.FundTransferConstants;
 
 @Service
 public class AccountService {
@@ -33,32 +33,34 @@ public class AccountService {
 	public Account retriveAccount(Long id) {
 		Optional<Account> account = accountRepository.findById(id);
 		if (!account.isPresent()) {
-			logger.error("Account Not Found Exception");
-			throw new CustomEntityNotFoundException("Account Not Found");
+			logger.error(FundTransferConstants.ACCOUNTNOTFOUND);
+			throw new CustomEntityNotFoundException(FundTransferConstants.ACCOUNTNOTFOUND);
 		}
 
 		return account.get();
 	}
 
 	public List<Account> retriveAllAccounts() {
+		logger.debug("Retrieving all Accounts from DB.");
 		return accountRepository.findAll();
 	}
 
 	public void deleteAccountById(Long id) {
+		logger.debug("Deleting account by id.");
 		accountRepository.deleteById(id);
 	}
 
 	public void deleteAllAccounts() {
+		logger.debug("Deleting all Accounts.");
 		accountRepository.deleteAll();
 	}
 
-	public Optional<AccountDto> findByAccountNumber(String accountNumber) {
+	public Optional<AccountDto> findByAccountNumber(String accountNumber, AccountDto accountDto) {
 		Optional<Account> account = accountRepository.findByAccountNumber(accountNumber);
 		if (!account.isPresent()) {
 			logger.error("Account Not Found Exception");
-			throw new CustomEntityNotFoundException("Account Not Found");
+			throw new CustomEntityNotFoundException(FundTransferConstants.ACCOUNTNOTFOUND);
 		}
-		AccountDto accountDto = new AccountDto();
 		BeanUtils.copyProperties(account, accountDto);
 		return Optional.of(accountDto);
 	}
@@ -67,7 +69,7 @@ public class AccountService {
 		Optional<Account> existingAccount = accountRepository.findById(accountDto.getId());
 		if (!existingAccount.isPresent()) {
 			logger.error("Account Not Found Exception");
-			throw new CustomEntityNotFoundException("Account Not Found");
+			throw new CustomEntityNotFoundException(FundTransferConstants.ACCOUNTNOTFOUND);
 		}
 		return accountRepository.save(existingAccount.get());
 	}

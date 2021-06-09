@@ -1,16 +1,28 @@
 package com.fund.transfer.dto;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 public class CustomUserDto {
 
 	private Long id;
 
+	@NotBlank
 	private String firstName;
 
+	@NotBlank
 	private String lastName;
 
+	@NotBlank
+	@Email(message="Should provide only valid email")
 	private String mailId;
 
-	private int mobileNumber;
+	@NotBlank
+	@Pattern(regexp = "(^$|[0-9]{10})", message = "Provide Valid mobile number")
+	private String mobileNumber;
 
 	private String address;
 
@@ -18,11 +30,14 @@ public class CustomUserDto {
 
 	private String state;
 
+	@NotNull
 	private int pinCode;
 
+	@NotBlank
+	@Size(min = 8, message = "password should have at least 8 characters")
 	private String password;
 
-	public boolean LoggedIn;
+	public boolean active;
 
 	public Long getId() {
 		return id;
@@ -56,11 +71,11 @@ public class CustomUserDto {
 		this.mailId = mailId;
 	}
 
-	public int getMobileNumber() {
+	public String getMobileNumber() {
 		return mobileNumber;
 	}
 
-	public void setMobileNumber(int mobileNumber) {
+	public void setMobileNumber(String mobileNumber) {
 		this.mobileNumber = mobileNumber;
 	}
 
@@ -104,12 +119,12 @@ public class CustomUserDto {
 		this.password = password;
 	}
 
-	public boolean isLoggedIn() {
-		return LoggedIn;
+	public boolean isActive() {
+		return active;
 	}
 
-	public void setLoggedIn(boolean loggedIn) {
-		LoggedIn = loggedIn;
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 
 	public CustomUserDto() {

@@ -21,16 +21,16 @@ public class CustomUser {
 	private String firstName;
 
 	@Column
-	@NotEmpty(message="Last Name must not be empty")
+	@NotEmpty(message = "Last Name must not be empty")
 	private String lastName;
 
 	@Column(unique = true)
-	@NotEmpty(message="Email must not be empty")
+	@NotEmpty(message = "Email must not be empty")
 	@Email
 	private String mailId;
 
 	@Column
-	private int mobileNumber;
+	private String mobileNumber;
 
 	@Column
 	private String address;
@@ -49,8 +49,8 @@ public class CustomUser {
 	@Size(min = 4, max = 12, message = "Password length must be in between 4 and 12")
 	public String password;
 
-	@Column
-	public boolean LoggedIn;
+	@Column(name = "IS_ACTIVE", columnDefinition = "boolean default false", nullable = false)
+	public boolean active = false;
 
 	public Long getId() {
 		return id;
@@ -84,11 +84,11 @@ public class CustomUser {
 		this.mailId = mailId;
 	}
 
-	public int getMobileNumber() {
+	public String getMobileNumber() {
 		return mobileNumber;
 	}
 
-	public void setMobileNumber(int mobileNumber) {
+	public void setMobileNumber(String mobileNumber) {
 		this.mobileNumber = mobileNumber;
 	}
 
@@ -132,12 +132,12 @@ public class CustomUser {
 		this.password = password;
 	}
 
-	public boolean isLoggedIn() {
-		return LoggedIn;
+	public boolean isActive() {
+		return active;
 	}
 
-	public void setLoggedIn(boolean loggedIn) {
-		LoggedIn = loggedIn;
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 
 	public CustomUser() {

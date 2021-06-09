@@ -1,17 +1,23 @@
 package com.fund.transfer.dto;
 
+import javax.validation.constraints.NotEmpty;
+
 public class BeneficiaryDto {
 
 	private Long id;
 
+	@NotEmpty
 	private String name;
 
+	@NotEmpty
 	private String accountNumber;
 
+	@NotEmpty
 	private String ifsc;
 
 	private String bank;
 
+	@NotEmpty
 	private Long userId;
 
 	public Long getId() {

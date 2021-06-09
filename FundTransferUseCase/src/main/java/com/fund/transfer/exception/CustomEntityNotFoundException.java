@@ -16,7 +16,7 @@ public class CustomEntityNotFoundException extends RuntimeException {
 	Logger logger = LoggerFactory.getLogger(CustomEntityNotFoundException.class);
 
 	public CustomEntityNotFoundException(String message) {
-		super(message + " Not Found");
-		logger.error(message + " Not Found");
+		super(message);
+		logger.error(message);
 	}
 }

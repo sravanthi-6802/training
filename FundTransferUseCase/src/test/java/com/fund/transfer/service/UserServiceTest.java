@@ -44,7 +44,7 @@ class UserServiceTest {
 		customUserDto.setFirstName("sravanthi");
 		customUserDto.setLastName("ch");
 		customUserDto.setMailId("abc@gmail.com");
-		customUserDto.setMobileNumber(1234567898);
+		customUserDto.setMobileNumber("1234567898");
 		customUserDto.setPassword("test456");
 
 		customUser = new CustomUser();
@@ -52,7 +52,7 @@ class UserServiceTest {
 		customUser.setFirstName("sravanthi");
 		customUser.setLastName("v");
 		customUser.setMailId("cba@gmail.com");
-		customUser.setMobileNumber(2123456787);
+		customUser.setMobileNumber("2123456787");
 		customUser.setPassword("test123");
 
 		CustomUser customUser1 = new CustomUser();
@@ -60,7 +60,7 @@ class UserServiceTest {
 		customUser1.setFirstName("pawan");
 		customUser1.setLastName("v");
 		customUser1.setMailId("pavan@gmail.com");
-		customUser1.setMobileNumber(223456787);
+		customUser1.setMobileNumber("223456787");
 		customUser1.setPassword("test123");
 
 		customUserList = new ArrayList<CustomUser>();

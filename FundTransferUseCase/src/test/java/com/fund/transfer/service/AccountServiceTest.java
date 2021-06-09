@@ -17,7 +17,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.BeanUtils;
 
 import com.fund.transfer.dto.AccountDto;
 import com.fund.transfer.repository.AccountRepository;
@@ -123,14 +122,12 @@ class AccountServiceTest {
 		when(accountRepository.findByAccountNumber("987654321234567")).thenReturn(Optional.of(account));
 
 		// event
-		Optional<AccountDto> result = accountService.findByAccountNumber("987654321234567");
+		Optional<AccountDto> result = accountService.findByAccountNumber("987654321234567", accountDto);
 
 		verify(accountRepository).findByAccountNumber("987654321234567");
 
-		Account acc = new Account();
-		BeanUtils.copyProperties(result, acc);
 		// outcome
-		assertEquals(account, acc);
+		assertEquals(accountDto, result.get());
 	}
 
 	@Test

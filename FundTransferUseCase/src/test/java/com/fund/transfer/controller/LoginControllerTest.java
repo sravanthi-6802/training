@@ -35,7 +35,7 @@ class LoginControllerTest {
 		customUserDto = new CustomUserDto();
 		customUserDto.setFirstName("sravanthi");
 		customUserDto.setPassword("password");
-		customUserDto.setLoggedIn(true);
+		customUserDto.setActive(true);
 		customUserDto.setId(1L);
 		customUserDto.setMailId("abc@gmail.com");
 
@@ -43,7 +43,7 @@ class LoginControllerTest {
 		customUser.setFirstName("sravanthi");
 		customUser.setLastName("ch");
 		customUser.setCity("mock city");
-		customUser.setMobileNumber(1234567678);
+		customUser.setMobileNumber("1234567678");
 		customUser.setMailId("abc@gmail.com");
 		customUser.setPassword("password");
 		customUser.setId(1L);

@@ -1,11 +1,16 @@
 package com.fund.transfer.dto;
 
+import javax.validation.constraints.NotEmpty;
+
 public class TransferFundRequest {
 
+	@NotEmpty
 	private String fromAccountNumber;
 
+	@NotEmpty
 	private String toAccountNumber;
 
+	@NotEmpty
 	private int amount;
 
 	public String getFromAccountNumber() {

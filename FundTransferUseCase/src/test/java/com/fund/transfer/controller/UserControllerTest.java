@@ -43,7 +43,7 @@ class UserControllerTest {
 		customUserDto.setFirstName("sravanthi");
 		customUserDto.setLastName("ch");
 		customUserDto.setMailId("abc@gmail.com");
-		customUserDto.setMobileNumber(1234567898);
+		customUserDto.setMobileNumber("1234567898");
 		customUserDto.setPassword("test456");
 
 		customUser = new CustomUser();
@@ -51,7 +51,7 @@ class UserControllerTest {
 		customUser.setFirstName("sravanthi");
 		customUser.setLastName("v");
 		customUser.setMailId("cba@gmail.com");
-		customUser.setMobileNumber(2123456787);
+		customUser.setMobileNumber("2123456787");
 		customUser.setPassword("test123");
 
 		CustomUser customUser1 = new CustomUser();
@@ -59,7 +59,7 @@ class UserControllerTest {
 		customUser1.setFirstName("pawan");
 		customUser1.setLastName("v");
 		customUser1.setMailId("pavan@gmail.com");
-		customUser1.setMobileNumber(223456787);
+		customUser1.setMobileNumber("223456787");
 		customUser1.setPassword("test123");
 
 		customUserList = new ArrayList<CustomUser>();
@@ -76,7 +76,7 @@ class UserControllerTest {
 		when(userService.addUser(customUserDto)).thenReturn(customUser);
 
 		// event
-		ResponseEntity<CustomUser> result = userController.createUser(customUserDto);
+		ResponseEntity<CustomUser> result = userController.createUser(customUserDto, null);
 
 		verify(userService).addUser(customUserDto);
 

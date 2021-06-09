@@ -11,6 +11,7 @@ import com.fund.transfer.dto.BeneficiaryDto;
 import com.fund.transfer.exception.CustomEntityNotFoundException;
 import com.fund.transfer.repository.BeneficiaryRepository;
 import com.fund.transfer.repository.entity.Beneficiary;
+import com.fund.transfer.util.FundTransferConstants;
 
 @Service
 public class BeneficiaryService {
@@ -31,7 +32,7 @@ public class BeneficiaryService {
 	public Beneficiary getBeneficiaryById(Long id) {
 		Optional<Beneficiary> beneficiary = beneficiaryRepository.findById(id);
 		if (!beneficiary.isPresent()) {
-			throw new CustomEntityNotFoundException("Beneficiary Not Found");
+			throw new CustomEntityNotFoundException(FundTransferConstants.BENEFICIARYNOTFOUND);
 		}
 
 		return beneficiary.get();
@@ -44,7 +45,7 @@ public class BeneficiaryService {
 	public Beneficiary findByAccountNumber(String accountNumber) {
 		Optional<Beneficiary> beneficiary = beneficiaryRepository.findByAccountNumber(accountNumber);
 		if (!beneficiary.isPresent()) {
-			throw new CustomEntityNotFoundException("Beneficiary Not Found");
+			throw new CustomEntityNotFoundException(FundTransferConstants.BENEFICIARYNOTFOUND);
 		}
 
 		return beneficiary.get();
@@ -53,7 +54,7 @@ public class BeneficiaryService {
 	public Beneficiary updateBeneficiary(BeneficiaryDto beneficiaryDto) {
 		Optional<Beneficiary> existingBeneficiary = beneficiaryRepository.findById(beneficiaryDto.getId());
 		if (!existingBeneficiary.isPresent()) {
-			throw new CustomEntityNotFoundException("Beneficiary Not Found");
+			throw new CustomEntityNotFoundException(FundTransferConstants.BENEFICIARYNOTFOUND);
 		}
 
 		return beneficiaryRepository.save(existingBeneficiary.get());
