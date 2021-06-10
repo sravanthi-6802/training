@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -35,6 +36,9 @@ public class UserController {
 	
 	@Autowired
 	private ShoppingService shoppingService;
+	
+	@Autowired
+	Environment environment;
 
 	@ApiOperation(value = "Api to register new User")
 	@PostMapping("/register")
@@ -70,7 +74,8 @@ public class UserController {
 
 	@GetMapping("/data")
 	public String userData() {
-		return "Fund Transfer User Controller Test Data";
+		String port = environment.getProperty("local.server.port");
+		return "Fund Transfer User Controller Test Data running on "+port;
 	}
 	
 	@GetMapping("/product")

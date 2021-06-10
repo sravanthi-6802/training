@@ -3,6 +3,9 @@ package com.feign.shopping.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,6 +30,12 @@ public class ProductController {
 	
 	@Autowired
 	private FundTransferClient fundTransferClient;
+	
+	@Autowired
+	CircuitBreakerFactory circuitBreakerFactory;
+	
+	@Autowired
+	Environment environment;
 
 	@PostMapping
 	public ResponseEntity<ProductDto> addProduct(@RequestBody ProductDto productDto) {
@@ -56,11 +65,17 @@ public class ProductController {
 	
 	@GetMapping("/data")
 	public String productData() {
-		return "Product Service Test Data";
+		String port = environment.getProperty("local.server.port");
+		return "Product Service Test Data running on "+port;
 	}
 
 	@GetMapping("/fundtransfer")
 	public String fundTransferData() {
-		return fundTransferClient.getUserData();
+		CircuitBreaker circuitBreaker = circuitBreakerFactory.create("circuitbreaker");
+		return circuitBreaker.run(()->fundTransferClient.getUserData(), Throwable -> getFundTransferDowntimeResponse());
+	}
+	
+	public String getFundTransferDowntimeResponse() {
+		return "Fund transfer service is down, try after some time.";
 	}
 }
