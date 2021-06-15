@@ -29,40 +29,43 @@ public class FundTransferController {
 
 	@PostMapping("/transfer")
 	public CustomTransaction transferFundRequest(@RequestBody TransferFundRequest fundRequest) {
-		AccountDto accountDto = new AccountDto();
+
 		CustomTransaction transaction = new CustomTransaction();
-		return sendMoney(fundRequest, accountDto, transaction);
+		return sendMoney(fundRequest, transaction);
 	}
 
-	public CustomTransaction sendMoney(TransferFundRequest fundRequest, AccountDto accountDto, CustomTransaction transaction) {
+	public CustomTransaction sendMoney(TransferFundRequest fundRequest, CustomTransaction transaction) {
 		String fromAccountNumber = fundRequest.getFromAccountNumber();
 		String toAccountNumber = fundRequest.getToAccountNumber();
 		BigDecimal amount = new BigDecimal(fundRequest.getAmount());
 
-		
-		Optional<AccountDto> account = accountService.findByAccountNumber(fromAccountNumber, accountDto);
+		CustomTransaction result = new CustomTransaction();
+
+		Optional<Account> account = accountService.findByAccountNumber(fromAccountNumber);
 		if (!account.isPresent()) {
 			throw new CustomEntityNotFoundException("From Account doesn't exist");
 		}
-		Account acc = new Account();
-		BeanUtils.copyProperties(account.get(), acc);
+		Account acc = account.get();
 		if (acc.getBalance().compareTo(BigDecimal.ONE) == 1 && acc.getBalance().compareTo(amount) == 1) {
+
+			AccountDto accountDto = new AccountDto();
 
 			transaction.setFromAccountnumber(fromAccountNumber);
 			transaction.setToAccountNumber(toAccountNumber);
 			transaction.setTransactionAmount(amount);
 
 			acc.setBalance(acc.getBalance().subtract(amount));
+
 			BeanUtils.copyProperties(acc, accountDto);
 			accountService.updateAccount(accountDto);
 
 			transaction.setTransactionDateTime(new Timestamp(System.currentTimeMillis()));
 
-			transactionService.addTransaction(transaction);
+			result = transactionService.addTransaction(transaction);
 
 		}
 
-		return transaction;
+		return result;
 
 	}
 

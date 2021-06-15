@@ -37,7 +37,7 @@ public class AccountController {
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public Account addAccount(@Valid @RequestBody AccountDto accountDto, BindingResult res) {
-		Optional<AccountDto> existing = accountService.findByAccountNumber(accountDto.getAccountNumber(), accountDto);
+		Optional<Account> existing = accountService.findAccountNumber(accountDto.getAccountNumber());
 		if (existing.isPresent()) {
 			throw new DuplicateEntryException("Already Account Number exists");
 		}

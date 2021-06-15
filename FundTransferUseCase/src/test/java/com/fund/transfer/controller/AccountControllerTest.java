@@ -96,15 +96,15 @@ class AccountControllerTest {
 	void getAccountByAccountNumberTest() {
 
 		// context
-		when(accountService.findByAccountNumber("2435678", accountDto)).thenReturn(Optional.of(accountDto));
+		when(accountService.findByAccountNumber("2435678")).thenReturn(Optional.of(account));
 
 		// event
-		Optional<AccountDto> result = accountService.findByAccountNumber("2435678", accountDto);
+		Optional<Account> result = accountService.findByAccountNumber("2435678");
 
-		verify(accountService).findByAccountNumber("2435678", accountDto);
+		verify(accountService).findByAccountNumber("2435678");
 
 		// outcome
-		assertEquals(accountDto, result.get());
+		assertEquals(account, result.get());
 
 	}
 

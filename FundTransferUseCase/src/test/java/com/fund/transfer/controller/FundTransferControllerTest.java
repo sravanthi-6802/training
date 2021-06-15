@@ -4,8 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -17,8 +15,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.fund.transfer.dto.AccountDto;
 import com.fund.transfer.dto.TransferFundRequest;
+import com.fund.transfer.repository.entity.Account;
 import com.fund.transfer.repository.entity.CustomTransaction;
 import com.fund.transfer.service.AccountService;
 import com.fund.transfer.service.CustomTransactionService;
@@ -41,7 +39,7 @@ class FundTransferControllerTest {
 	
 	static CustomTransaction transaction;
 
-	static AccountDto account;
+	static Account account;
 
 	@BeforeAll
 	public static void setUp() {
@@ -62,7 +60,7 @@ class FundTransferControllerTest {
 		transaction.setId(1L);
 		transaction.setTransactionAmount(new BigDecimal(1200));
 
-		account = new AccountDto();
+		account = new Account();
 		account.setAccountHolderName("sravanthi ch");
 		account.setAccountNumber("987654321234567");
 		account.setIfscCode("HDFC000786");
@@ -80,10 +78,10 @@ class FundTransferControllerTest {
 		// context
 		when(customTransactionService.addTransaction(customTransaction)).thenReturn(transaction);
 
-		when(accountService.findByAccountNumber("987654321234567", account)).thenReturn(Optional.of(account));
+		when(accountService.findByAccountNumber("987654321234567")).thenReturn(Optional.of(account));
 
 		// event
-		CustomTransaction result = fundTransferController.sendMoney(transferFundRequest, account, transaction);
+		CustomTransaction result = fundTransferController.sendMoney(transferFundRequest, transaction);
 
 		// outcome
 		assertEquals(transaction, result);

@@ -55,14 +55,17 @@ public class AccountService {
 		accountRepository.deleteAll();
 	}
 
-	public Optional<AccountDto> findByAccountNumber(String accountNumber, AccountDto accountDto) {
+	public Optional<Account> findByAccountNumber(String accountNumber) {
 		Optional<Account> account = accountRepository.findByAccountNumber(accountNumber);
 		if (!account.isPresent()) {
 			logger.error("Account Not Found Exception");
 			throw new CustomEntityNotFoundException(FundTransferConstants.ACCOUNTNOTFOUND);
 		}
-		BeanUtils.copyProperties(account, accountDto);
-		return Optional.of(accountDto);
+		return account;
+	}
+	
+	public Optional<Account> findAccountNumber(String accountNumber) {		
+		return accountRepository.findByAccountNumber(accountNumber);
 	}
 
 	public Account updateAccount(AccountDto accountDto) {
