@@ -27,29 +27,25 @@ public class ProductController {
 
 	@Autowired
 	private ProductService productService;
-	
+
 	@Autowired
 	private FundTransferClient fundTransferClient;
-	
+
 	@Autowired
 	CircuitBreakerFactory circuitBreakerFactory;
-	
+
 	@Autowired
 	Environment environment;
 
 	@PostMapping
-	public ResponseEntity<ProductDto> addProduct(@RequestBody ProductDto productDto) {
-		ProductDto result = productService.addProduct(productDto);
-		return new ResponseEntity<>(result, HttpStatus.OK);
-	}
-	
-	public ResponseEntity<Product> modifyProduct(@RequestBody ProductDto productDto){
-		return null;
+	public ResponseEntity<Product> addProduct(@RequestBody ProductDto productDto) {
+		Product result = productService.addProduct(productDto);
+		return new ResponseEntity<>(result, HttpStatus.CREATED);
 	}
 
 	@GetMapping
 	public ResponseEntity<List<Product>> retrieveProducts() {
-		return new ResponseEntity<>(productService.retrieveProducts(), HttpStatus.OK);
+		return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
 	}
 
 	@GetMapping("/product/{id}")
@@ -62,19 +58,36 @@ public class ProductController {
 		productService.deleteProducts();
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-	
+
+	@GetMapping("/product/brand/{brand}")
+	public ResponseEntity<List<Product>> searchByBrand(@PathVariable("brand") String brand) {
+		return new ResponseEntity<>(productService.getProductByBrand(brand), HttpStatus.OK);
+	}
+
+	@GetMapping("/{name}")
+	public ResponseEntity<List<Product>> getProductByName(@PathVariable("name") String name) {
+		return new ResponseEntity<>(productService.getAllProductByName(name), HttpStatus.OK);
+	}
+
+	@GetMapping("/product/brand/color/{brand}/{color}")
+	public ResponseEntity<List<Product>> searchByBrandAndColor(@PathVariable("brand") String brand,
+			@PathVariable("color") String color) {
+		return new ResponseEntity<>(productService.getProductByBrandAndColor(brand, color), HttpStatus.OK);
+	}
+
 	@GetMapping("/data")
 	public String productData() {
 		String port = environment.getProperty("local.server.port");
-		return "Product Service Test Data running on "+port;
+		return "Product Service Test Data running on " + port;
 	}
 
 	@GetMapping("/fundtransfer")
 	public String fundTransferData() {
 		CircuitBreaker circuitBreaker = circuitBreakerFactory.create("circuitbreaker");
-		return circuitBreaker.run(()->fundTransferClient.getUserData(), Throwable -> getFundTransferDowntimeResponse());
+		return circuitBreaker.run(() -> fundTransferClient.getUserData(),
+				Throwable -> getFundTransferDowntimeResponse());
 	}
-	
+
 	public String getFundTransferDowntimeResponse() {
 		return "Fund transfer service is down, try after some time.";
 	}
