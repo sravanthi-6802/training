@@ -13,7 +13,7 @@ public class CustomEntityNotFoundException extends RuntimeException {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	final Logger logger = LoggerFactory.getLogger(CustomEntityNotFoundException.class);
+	final transient Logger logger = LoggerFactory.getLogger(CustomEntityNotFoundException.class);
 
 	public CustomEntityNotFoundException(String message) {
 		super(message);

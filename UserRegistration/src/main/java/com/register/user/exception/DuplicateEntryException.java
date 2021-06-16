@@ -13,7 +13,7 @@ public class DuplicateEntryException extends RuntimeException {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	final Logger logger = LoggerFactory.getLogger(DuplicateEntryException.class);
+	final transient Logger logger = LoggerFactory.getLogger(DuplicateEntryException.class);
 
 	public DuplicateEntryException(String message) {
 		super(message);

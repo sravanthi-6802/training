@@ -20,7 +20,7 @@ public class UserRegistrationApplication {
 	}
 	
 	@Bean
-	public Docket UserRegistrationApi() {
+	public Docket userRegistrationApi() {
 		return new Docket(DocumentationType.SWAGGER_2).select()
 				.apis(RequestHandlerSelectors.basePackage("com.register.user")).build();
 	}
