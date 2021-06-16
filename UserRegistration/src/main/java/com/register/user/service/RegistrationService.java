@@ -37,13 +37,11 @@ public class RegistrationService {
 
 	}
 
-	public UserRegister userExists(String email, String mobile) {
+	public void userExists(String email, String mobile) {
 		Optional<UserRegister> result = registrationRepository.findByEmailAndMobile(email, mobile);
 		if (result.isPresent()) {
 			throw new DuplicateEntryException("User already exists with email/mobile number.");
-		} else {
-			return null;
-		}
+		} 
 	}
 
 	public UserRegister getUserById(Long id) {

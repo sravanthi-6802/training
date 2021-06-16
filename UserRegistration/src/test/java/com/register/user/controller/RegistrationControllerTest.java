@@ -82,8 +82,7 @@ class RegistrationControllerTest {
 	void addUserTest() {
 		// context
 		when(registrationService.registerUser(registerDto)).thenReturn(register);
-		when(registrationService.userExists(login.getEmail(), login.getMobile())).thenReturn(null);
-
+		
 		// event
 		ResponseEntity<UserRegister> result = registrationController.registerUser(registerDto, null);
 		verify(registrationService).registerUser(registerDto);
